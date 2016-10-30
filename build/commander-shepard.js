@@ -97,6 +97,10 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     this.usage = usage;
     this.description = description;
     this.globalOptions = globalOptions;
+    this.globalOptions['help'] = {
+      names: ['--help', '-h'],
+      help: 'show help for commands'
+    };
 
     this._setUpHelpCommand();
   }
@@ -152,12 +156,12 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     value: function start() {
       try {
         var handler = this.handlers[this.command];
-        if (!handler || ['help', 'version'].indexOf(this.command) !== -1) {
+        if (!handler || ['help'].indexOf(this.command) !== -1) {
           return handler ? handler.command() : this.handlers['help'].command();
         }
 
         // special case command --help show detailed help for command
-        if (this.options['help']) {
+        if (this.options['help'] || this.options['h']) {
           return printer.detailedHelp({ handler: handler });
         }
 
