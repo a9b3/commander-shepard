@@ -13,10 +13,10 @@ function formatHelpStr(options) {
 
     var names = option.name || option.names.join(', ');
     var spacing = '\t\t';
-    if (names.length > 10) {
+    if (names.length > 8) {
       spacing = '\t';
     }
-    if (names.length < 5) {
+    if (names.length < 4) {
       spacing = '\t\t\t';
     }
     return '' + pad + names + spacing + (option.help || '') + (option.required && ' (*required)' || '');
