@@ -98,7 +98,7 @@ export default class Commander {
         options: this.options,
       })
     } catch (e) {
-      console.log(e)
+      console.log(e.toString())
     }
   }
 }
