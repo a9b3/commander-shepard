@@ -1,5 +1,7 @@
 # Commander Shepard
 
+![preview](https://github.com/esayemm/commander-shepard/blob/master/screenshot/commander-shepard.gif?raw=true)
+
 Framework for building command line tools.
 
 ```sh
