@@ -178,7 +178,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
           options: this.options
         });
       } catch (e) {
-        console.log(e);
+        console.log(e.toString());
       }
     }
   }]);
