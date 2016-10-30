@@ -16,7 +16,7 @@ function getOptionsLines(options) {
   })
 }
 
-export function help({ pkgInfo, handlers, globalOptions, usage, description }) {
+export function help({ pkgInfo, handlers, globalOptions, usage, description, extraInHelpMenu }) {
   const handlersLines = handlers && Object.keys(handlers).length && [
     `Commands:\n`,
   ].concat(
@@ -44,6 +44,9 @@ export function help({ pkgInfo, handlers, globalOptions, usage, description }) {
   lines.forEach(line => {
     console.log(`${pad}${line}`)
   })
+  if (extraInHelpMenu) {
+    console.log(extraInHelpMenu)
+  }
 }
 
 export function detailedHelp({ handler }) {

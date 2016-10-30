@@ -19,7 +19,7 @@ export default class Commander {
   handlers = {}
   globalOptions = {}
 
-  constructor({ pkg, usage, description, globalOptions }) {
+  constructor({ pkg, usage, description, globalOptions, extraInHelpMenu }) {
     /* requires parsing */
     this.pkgInfo = helper.parsePkg(pkg)
     const { command, args, options } = helper.parseArgv(argv)
@@ -36,10 +36,10 @@ export default class Commander {
       help: 'show help for commands',
     }
 
-    this._setUpHelpCommand()
+    this._setUpHelpCommand(extraInHelpMenu)
   }
 
-  _setUpHelpCommand() {
+  _setUpHelpCommand(extraInHelpMenu) {
     this.add({
       name: 'help',
       help: 'show help',
@@ -49,7 +49,8 @@ export default class Commander {
           handlers: this.handlers,
           globalOptions: this.globalOptions,
           usage: this.usage,
-          description: this.description
+          description: this.description,
+          extraInHelpMenu,
         })
       },
     })
