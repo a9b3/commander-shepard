@@ -1,5 +1,5 @@
 {
-  "name": "commander-sheperd",
+  "name": "commander-shepard",
   "version": "1.1.0",
   "main": "build/index.js",
   "description": "Little framework for building command line tools",
