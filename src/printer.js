@@ -6,7 +6,7 @@ function formatHelpStr(options) {
 
     const names = option.name || option.names.join(', ')
     let spacing = `\t\t`
-    if (names.length > 8) {
+    if (names.length > 12) {
       spacing = `\t`
     }
     if (names.length < 4) {
