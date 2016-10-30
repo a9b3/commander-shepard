@@ -13,7 +13,7 @@ function formatHelpStr(options) {
 
     var names = option.name || option.names.join(', ');
     var spacing = '\t\t';
-    if (names.length > 8) {
+    if (names.length > 12) {
       spacing = '\t';
     }
     if (names.length < 4) {
