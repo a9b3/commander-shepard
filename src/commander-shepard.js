@@ -61,7 +61,7 @@ export default class Commander {
     this.handlers[opts.name] = opts
   }
 
-  _checkRequiredOptions(required, options) {
+  _checkRequiredOptions(required = {}, options = {}) {
     const re = /^-+(.*)/
 
     Object.keys(required).forEach(key => {
