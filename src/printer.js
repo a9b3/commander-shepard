@@ -1,6 +1,6 @@
 const pad = `  `
 
-function getOptionsLines(options) {
+function formatHelpStr(options) {
   return Object.keys(options).map(key => {
     const option = options[key]
 
@@ -19,17 +19,11 @@ function getOptionsLines(options) {
 export function help({ pkgInfo, handlers, globalOptions, usage, description, extraInHelpMenu }) {
   const handlersLines = handlers && Object.keys(handlers).length && [
     `Commands:\n`,
-  ].concat(
-    Object.keys(handlers).map(key => {
-      const handler = handlers[key]
-      return `${pad}- ${handler.name}\t\t${handler.help || ''}`
-    })
-  ).concat([``])
+  ].concat(formatHelpStr(handlers)).concat([``])
 
-  // TODO(sam) this and handlersLines are the same thing, refactor later
   const globalOptionsLines = globalOptions && Object.keys(globalOptions).length && [
     `Global Options:\n`,
-  ].concat(getOptionsLines(globalOptions)).concat([``])
+  ].concat(formatHelpStr(globalOptions)).concat([``])
 
   const lines = [
     ``,
@@ -52,7 +46,7 @@ export function help({ pkgInfo, handlers, globalOptions, usage, description, ext
 export function detailedHelp({ handler }) {
   const optionsLines = handler.options && Object.keys(handler.options).length && [
     `Options:\n`,
-  ].concat(getOptionsLines(handler.options)).concat([``])
+  ].concat(formatHelpStr(handler.options)).concat([``])
 
   const lines = [
     ``,
