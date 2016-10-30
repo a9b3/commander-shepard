@@ -5,6 +5,11 @@
   "description": "Little framework for building command line tools",
   "author": "Sam Lau <esayemm@gmail.com>",
   "license": "MIT",
+  "homepage": "https://github.com/esayemm/commander-shepard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/esayemm/commander-shepard"
+  },
   "scripts": {
     "version": "npm run build && git add .",
     "postversion": "git push && git push --tags && npm publish",
