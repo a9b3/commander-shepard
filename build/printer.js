@@ -7,7 +7,7 @@ exports.help = help;
 exports.detailedHelp = detailedHelp;
 var pad = '  ';
 
-function getOptionsLines(options) {
+function formatHelpStr(options) {
   return Object.keys(options).map(function (key) {
     var option = options[key];
 
@@ -31,13 +31,9 @@ function help(_ref) {
       description = _ref.description,
       extraInHelpMenu = _ref.extraInHelpMenu;
 
-  var handlersLines = handlers && Object.keys(handlers).length && ['Commands:\n'].concat(Object.keys(handlers).map(function (key) {
-    var handler = handlers[key];
-    return pad + '- ' + handler.name + '\t\t' + (handler.help || '');
-  })).concat(['']);
+  var handlersLines = handlers && Object.keys(handlers).length && ['Commands:\n'].concat(formatHelpStr(handlers)).concat(['']);
 
-  // TODO(sam) this and handlersLines are the same thing, refactor later
-  var globalOptionsLines = globalOptions && Object.keys(globalOptions).length && ['Global Options:\n'].concat(getOptionsLines(globalOptions)).concat(['']);
+  var globalOptionsLines = globalOptions && Object.keys(globalOptions).length && ['Global Options:\n'].concat(formatHelpStr(globalOptions)).concat(['']);
 
   var lines = ['', pkgInfo ? pkgInfo.name + ' ' + pkgInfo.version + '\n' : null, description ? '' + pad + description + '\n' : null, usage ? 'Usage: ' + usage + '\n' : null].concat(handlersLines).concat(globalOptionsLines).filter(function (a) {
     return a !== null && a !== undefined;
@@ -54,7 +50,7 @@ function help(_ref) {
 function detailedHelp(_ref2) {
   var handler = _ref2.handler;
 
-  var optionsLines = handler.options && Object.keys(handler.options).length && ['Options:\n'].concat(getOptionsLines(handler.options)).concat(['']);
+  var optionsLines = handler.options && Object.keys(handler.options).length && ['Options:\n'].concat(formatHelpStr(handler.options)).concat(['']);
 
   var lines = ['', handler.usage ? 'Usage: ' + handler.usage + '\n' : null].concat(optionsLines).filter(function (a) {
     return a !== null && a !== undefined;
