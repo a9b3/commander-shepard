@@ -30,7 +30,7 @@ export default class Commander {
     /* from constructor */
     this.usage = usage
     this.description = description
-    this.globalOptions = globalOptions
+    this.globalOptions = globalOptions || {}
     this.globalOptions['help'] = {
       names: ['--help', '-h'],
       help: 'show help for commands',
