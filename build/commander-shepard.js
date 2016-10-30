@@ -64,7 +64,8 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     var pkg = _ref.pkg,
         usage = _ref.usage,
         description = _ref.description,
-        globalOptions = _ref.globalOptions;
+        globalOptions = _ref.globalOptions,
+        extraInHelpMenu = _ref.extraInHelpMenu;
 
     _classCallCheck(this, Commander);
 
@@ -102,12 +103,12 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
       help: 'show help for commands'
     };
 
-    this._setUpHelpCommand();
+    this._setUpHelpCommand(extraInHelpMenu);
   }
 
   _createClass(Commander, [{
     key: '_setUpHelpCommand',
-    value: function _setUpHelpCommand() {
+    value: function _setUpHelpCommand(extraInHelpMenu) {
       var _this = this;
 
       this.add({
@@ -119,7 +120,8 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
             handlers: _this.handlers,
             globalOptions: _this.globalOptions,
             usage: _this.usage,
-            description: _this.description
+            description: _this.description,
+            extraInHelpMenu: extraInHelpMenu
           });
         }
       });

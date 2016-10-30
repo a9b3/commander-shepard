@@ -28,7 +28,8 @@ function help(_ref) {
       handlers = _ref.handlers,
       globalOptions = _ref.globalOptions,
       usage = _ref.usage,
-      description = _ref.description;
+      description = _ref.description,
+      extraInHelpMenu = _ref.extraInHelpMenu;
 
   var handlersLines = handlers && Object.keys(handlers).length && ['Commands:\n'].concat(Object.keys(handlers).map(function (key) {
     var handler = handlers[key];
@@ -45,6 +46,9 @@ function help(_ref) {
   lines.forEach(function (line) {
     console.log('' + pad + line);
   });
+  if (extraInHelpMenu) {
+    console.log(extraInHelpMenu);
+  }
 }
 
 function detailedHelp(_ref2) {
