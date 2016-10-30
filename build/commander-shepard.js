@@ -96,7 +96,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     /* from constructor */
     this.usage = usage;
     this.description = description;
-    this.globalOptions = globalOptions;
+    this.globalOptions = globalOptions || {};
     this.globalOptions['help'] = {
       names: ['--help', '-h'],
       help: 'show help for commands'
