@@ -2,6 +2,7 @@ const argv = require('yargs').argv
 import * as helper from './helper.js'
 import invariant from 'invariant'
 import * as printer from './printer.js'
+import chalk from 'chalk'
 
 export default class Commander {
   command = null
@@ -98,7 +99,7 @@ export default class Commander {
         options: this.options,
       })
     } catch (e) {
-      console.log(e.message)
+      console.log(chalk.red(e.message))
     }
   }
 }
