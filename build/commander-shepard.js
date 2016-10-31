@@ -21,6 +21,10 @@ var _printer = require('./printer.js');
 
 var printer = _interopRequireWildcard(_printer);
 
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -204,7 +208,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
                 _context.prev = 12;
                 _context.t0 = _context['catch'](0);
 
-                console.log(_context.t0.message);
+                console.log(_chalk2.default.red(_context.t0.message));
 
               case 15:
               case 'end':
