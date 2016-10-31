@@ -25,6 +25,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
@@ -158,29 +160,66 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     }
   }, {
     key: 'start',
-    value: function start() {
-      try {
-        var handler = this.handlers[this.command];
-        if (!handler || ['help'].indexOf(this.command) !== -1) {
-          return handler ? handler.command() : this.handlers['help'].command();
-        }
+    value: function () {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+        var handler;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                handler = this.handlers[this.command];
 
-        // special case command --help show detailed help for command
-        if (this.options['help'] || this.options['h']) {
-          return printer.detailedHelp({ handler: handler });
-        }
+                if (!(!handler || ['help'].indexOf(this.command) !== -1)) {
+                  _context.next = 4;
+                  break;
+                }
 
-        this._checkRequiredOptions(this.globalOptions, this.options);
-        this._checkRequiredOptions(handler.options, this.options);
+                return _context.abrupt('return', handler ? handler.command() : this.handlers['help'].command());
 
-        handler.command({
-          args: this.args,
-          options: this.options
-        });
-      } catch (e) {
-        console.log(e.toString());
+              case 4:
+                if (!(this.options['help'] || this.options['h'])) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt('return', printer.detailedHelp({ handler: handler }));
+
+              case 6:
+
+                this._checkRequiredOptions(this.globalOptions, this.options);
+                this._checkRequiredOptions(handler.options, this.options);
+
+                _context.next = 10;
+                return handler.command({
+                  args: this.args,
+                  options: this.options
+                });
+
+              case 10:
+                _context.next = 15;
+                break;
+
+              case 12:
+                _context.prev = 12;
+                _context.t0 = _context['catch'](0);
+
+                console.log(_context.t0.toString());
+
+              case 15:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 12]]);
+      }));
+
+      function start() {
+        return _ref2.apply(this, arguments);
       }
-    }
+
+      return start;
+    }()
   }]);
 
   return Commander;
