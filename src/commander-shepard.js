@@ -78,7 +78,7 @@ export default class Commander {
     })
   }
 
-  start() {
+  async start() {
     try {
       const handler = this.handlers[this.command]
       if (!handler || ['help'].indexOf(this.command) !== -1) {
@@ -93,7 +93,7 @@ export default class Commander {
       this._checkRequiredOptions(this.globalOptions, this.options)
       this._checkRequiredOptions(handler.options, this.options)
 
-      handler.command({
+      await handler.command({
         args: this.args,
         options: this.options,
       })
