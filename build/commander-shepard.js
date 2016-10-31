@@ -204,7 +204,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
                 _context.prev = 12;
                 _context.t0 = _context['catch'](0);
 
-                console.log(_context.t0.toString());
+                console.log(_context.t0.message);
 
               case 15:
               case 'end':
