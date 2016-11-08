@@ -6,9 +6,11 @@ import chalk from 'chalk'
 
 export default class Commander {
   command = null
-  usage = null
   args = []
   options = {}
+
+  /* optional metadata */
+  usage = null
   pkgInfo = {
     name: null,
     version: null,
@@ -22,7 +24,9 @@ export default class Commander {
 
   constructor({ pkg, usage, description, globalOptions, extraInHelpMenu, command }) {
     /* requires parsing */
-    this.pkgInfo = helper.parsePkg(pkg)
+    this.pkgInfo = pkg && helper.parsePkg(pkg)
+
+    // parsed command line arguments
     const parsedArgs = helper.parseArgv(argv)
     this.command = parsedArgs.command
     this.args = parsedArgs.args
@@ -85,9 +89,24 @@ export default class Commander {
 
   async start() {
     try {
+      // check if command exists
+      if (this.command && !this.handlers[this.command]) {
+        throw new Error('Command does not exist')
+      }
+
+      if (this.options['help'] || this.options['h'] || this.command === 'help') {
+        return this.handlers['help'].command()
+      }
+
       const handler = this.handlers[this.command]
-      if (!handler || ['help'].indexOf(this.command) !== -1) {
-        return handler ? handler.command() : this.handlers['__default'] ? this.handlers['__default'].command() : this.handlers['help'].command()
+      if (!handler) {
+        if (this.handlers['__default']) {
+          this._checkRequiredOptions(this.globalOptions, this.options)
+          this._checkRequiredOptions(this.handlers['__default'].options, this.options)
+          return this.handlers['__default'].command()
+        } else {
+          return this.handlers['help'].command()
+        }
       }
 
       // special case command --help show detailed help for command

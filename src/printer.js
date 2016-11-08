@@ -4,7 +4,11 @@ function formatHelpStr(options) {
   return Object.keys(options).map(key => {
     const option = options[key]
 
-    const names = option.name || option.names.join(', ')
+    const names = option.name || option.names && option.names.join(', ')
+    if (!names) {
+      return
+    }
+
     let spacing = `\t\t`
     if (names.length > 12) {
       spacing = `\t`
