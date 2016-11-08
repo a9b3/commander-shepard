@@ -208,7 +208,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
 
                 this._checkRequiredOptions(this.globalOptions, this.options);
                 this._checkRequiredOptions(this.handlers['__default'].options, this.options);
-                return _context.abrupt('return', this.handlers['__default'].command());
+                return _context.abrupt('return', this.handlers['__default'].command({ args: this.args, options: this.options }));
 
               case 13:
                 return _context.abrupt('return', this.handlers['help'].command());
