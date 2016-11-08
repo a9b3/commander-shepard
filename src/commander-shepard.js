@@ -23,10 +23,10 @@ export default class Commander {
   constructor({ pkg, usage, description, globalOptions, extraInHelpMenu, command }) {
     /* requires parsing */
     this.pkgInfo = helper.parsePkg(pkg)
-    const { command, args, options } = helper.parseArgv(argv)
-    this.command = command
-    this.args = args
-    this.options = options
+    const parsedArgs = helper.parseArgv(argv)
+    this.command = parsedArgs.command
+    this.args = parsedArgs.args
+    this.options = parsedArgs.options
 
     /* from constructor */
     this.usage = usage
