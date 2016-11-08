@@ -11,7 +11,11 @@ function formatHelpStr(options) {
   return Object.keys(options).map(function (key) {
     var option = options[key];
 
-    var names = option.name || option.names.join(', ');
+    var names = option.name || option.names && option.names.join(', ');
+    if (!names) {
+      return;
+    }
+
     var spacing = '\t\t';
     if (names.length > 12) {
       spacing = '\t';

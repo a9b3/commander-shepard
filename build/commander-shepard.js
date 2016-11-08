@@ -77,9 +77,9 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     _classCallCheck(this, Commander);
 
     this.command = null;
-    this.usage = null;
     this.args = [];
     this.options = {};
+    this.usage = null;
     this.pkgInfo = {
       name: null,
       version: null,
@@ -90,7 +90,9 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
     this.globalOptions = {};
 
     /* requires parsing */
-    this.pkgInfo = helper.parsePkg(pkg);
+    this.pkgInfo = pkg && helper.parsePkg(pkg);
+
+    // parsed command line arguments
     var parsedArgs = helper.parseArgv(argv);
     this.command = parsedArgs.command;
     this.args = parsedArgs.args;
@@ -111,6 +113,9 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
 
     this._setUpHelpCommand(extraInHelpMenu);
   }
+
+  /* optional metadata */
+
 
   _createClass(Commander, [{
     key: '_setUpHelpCommand',
@@ -172,50 +177,77 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                handler = this.handlers[this.command];
 
-                if (!(!handler || ['help'].indexOf(this.command) !== -1)) {
-                  _context.next = 4;
+                if (!(this.command && !this.handlers[this.command])) {
+                  _context.next = 3;
                   break;
                 }
 
-                return _context.abrupt('return', handler ? handler.command() : this.handlers['__default'] ? this.handlers['__default'].command() : this.handlers['help'].command());
+                throw new Error('Command does not exist');
 
-              case 4:
+              case 3:
+                if (!(this.options['help'] || this.options['h'] || this.command === 'help')) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt('return', this.handlers['help'].command());
+
+              case 5:
+                handler = this.handlers[this.command];
+
+                if (handler) {
+                  _context.next = 14;
+                  break;
+                }
+
+                if (!this.handlers['__default']) {
+                  _context.next = 13;
+                  break;
+                }
+
+                this._checkRequiredOptions(this.globalOptions, this.options);
+                this._checkRequiredOptions(this.handlers['__default'].options, this.options);
+                return _context.abrupt('return', this.handlers['__default'].command());
+
+              case 13:
+                return _context.abrupt('return', this.handlers['help'].command());
+
+              case 14:
                 if (!(this.options['help'] || this.options['h'])) {
-                  _context.next = 6;
+                  _context.next = 16;
                   break;
                 }
 
                 return _context.abrupt('return', printer.detailedHelp({ handler: handler }));
 
-              case 6:
+              case 16:
 
                 this._checkRequiredOptions(this.globalOptions, this.options);
                 this._checkRequiredOptions(handler.options, this.options);
 
-                _context.next = 10;
+                _context.next = 20;
                 return handler.command({
                   args: this.args,
                   options: this.options
                 });
 
-              case 10:
-                _context.next = 15;
+              case 20:
+                _context.next = 25;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 22:
+                _context.prev = 22;
                 _context.t0 = _context['catch'](0);
 
                 console.log(_chalk2.default.red(_context.t0.message));
 
-              case 15:
+              case 25:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 12]]);
+        }, _callee, this, [[0, 22]]);
       }));
 
       function start() {
