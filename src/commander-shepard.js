@@ -103,7 +103,7 @@ export default class Commander {
         if (this.handlers['__default']) {
           this._checkRequiredOptions(this.globalOptions, this.options)
           this._checkRequiredOptions(this.handlers['__default'].options, this.options)
-          return this.handlers['__default'].command()
+          return this.handlers['__default'].command({ args: this.args, options: this.options })
         } else {
           return this.handlers['help'].command()
         }
