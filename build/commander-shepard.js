@@ -71,7 +71,8 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
         usage = _ref.usage,
         description = _ref.description,
         globalOptions = _ref.globalOptions,
-        extraInHelpMenu = _ref.extraInHelpMenu;
+        extraInHelpMenu = _ref.extraInHelpMenu,
+        command = _ref.command;
 
     _classCallCheck(this, Commander);
 
@@ -90,15 +91,10 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
 
     /* requires parsing */
     this.pkgInfo = helper.parsePkg(pkg);
-
-    var _helper$parseArgv = helper.parseArgv(argv),
-        command = _helper$parseArgv.command,
-        args = _helper$parseArgv.args,
-        options = _helper$parseArgv.options;
-
-    this.command = command;
-    this.args = args;
-    this.options = options;
+    var parsedArgs = helper.parseArgv(argv);
+    this.command = parsedArgs.command;
+    this.args = parsedArgs.args;
+    this.options = parsedArgs.options;
 
     /* from constructor */
     this.usage = usage;
@@ -108,6 +104,10 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
       names: ['--help', '-h'],
       help: 'show help for commands'
     };
+
+    if (command) {
+      this.handlers['__default'] = { command: command };
+    }
 
     this._setUpHelpCommand(extraInHelpMenu);
   }
@@ -179,7 +179,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
                   break;
                 }
 
-                return _context.abrupt('return', handler ? handler.command() : this.handlers['help'].command());
+                return _context.abrupt('return', handler ? handler.command() : this.handlers['__default'] ? this.handlers['__default'].command() : this.handlers['help'].command());
 
               case 4:
                 if (!(this.options['help'] || this.options['h'])) {
