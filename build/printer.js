@@ -3,12 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 exports.help = help;
 exports.detailedHelp = detailedHelp;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var pad = '  ';
 
 function formatHelpStr(options) {
-  return Object.keys(options).map(function (key) {
+  return (0, _keys2.default)(options).map(function (key) {
     var option = options[key];
 
     var names = option.name || option.names && option.names.join(', ');
@@ -35,9 +43,9 @@ function help(_ref) {
       description = _ref.description,
       extraInHelpMenu = _ref.extraInHelpMenu;
 
-  var handlersLines = handlers && Object.keys(handlers).length && ['Commands:\n'].concat(formatHelpStr(handlers)).concat(['']);
+  var handlersLines = handlers && (0, _keys2.default)(handlers).length && ['Commands:\n'].concat(formatHelpStr(handlers)).concat(['']);
 
-  var globalOptionsLines = globalOptions && Object.keys(globalOptions).length && ['Global Options:\n'].concat(formatHelpStr(globalOptions)).concat(['']);
+  var globalOptionsLines = globalOptions && (0, _keys2.default)(globalOptions).length && ['Global Options:\n'].concat(formatHelpStr(globalOptions)).concat(['']);
 
   var lines = ['', pkgInfo ? pkgInfo.name + ' ' + pkgInfo.version + '\n' : null, description ? '' + pad + description + '\n' : null, usage ? 'Usage: ' + usage + '\n' : null].concat(handlersLines).concat(globalOptionsLines).filter(function (a) {
     return a !== null && a !== undefined;
@@ -54,7 +62,7 @@ function help(_ref) {
 function detailedHelp(_ref2) {
   var handler = _ref2.handler;
 
-  var optionsLines = handler.options && Object.keys(handler.options).length && ['Options:\n'].concat(formatHelpStr(handler.options)).concat(['']);
+  var optionsLines = handler.options && (0, _keys2.default)(handler.options).length && ['Options:\n'].concat(formatHelpStr(handler.options)).concat(['']);
 
   var lines = ['', handler.usage ? 'Usage: ' + handler.usage + '\n' : null].concat(optionsLines).filter(function (a) {
     return a !== null && a !== undefined;

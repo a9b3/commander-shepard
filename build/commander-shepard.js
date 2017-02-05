@@ -5,7 +5,29 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _getOwnPropertyDescriptor = require('babel-runtime/core-js/object/get-own-property-descriptor');
+
+var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _dec, _desc, _value, _class;
 
@@ -25,13 +47,9 @@ var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -73,9 +91,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
         globalOptions = _ref.globalOptions,
         extraInHelpMenu = _ref.extraInHelpMenu,
         command = _ref.command;
-
-    _classCallCheck(this, Commander);
-
+    (0, _classCallCheck3.default)(this, Commander);
     this.command = null;
     this.args = [];
     this.options = {};
@@ -117,7 +133,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
   /* optional metadata */
 
 
-  _createClass(Commander, [{
+  (0, _createClass3.default)(Commander, [{
     key: '_setUpHelpCommand',
     value: function _setUpHelpCommand(extraInHelpMenu) {
       var _this = this;
@@ -151,7 +167,7 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
 
       var re = /^-+(.*)/;
 
-      Object.keys(required).forEach(function (key) {
+      (0, _keys2.default)(required).forEach(function (key) {
         var option = required[key];
         if (!option.required) {
           return;
@@ -170,9 +186,9 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
   }, {
     key: 'start',
     value: function () {
-      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
         var handler;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -257,7 +273,6 @@ var Commander = (_dec = helper.requiredKeysInOpt(['name', 'command']), (_class =
       return start;
     }()
   }]);
-
   return Commander;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'add', [_dec], Object.getOwnPropertyDescriptor(_class.prototype, 'add'), _class.prototype)), _class));
+}(), (_applyDecoratedDescriptor(_class.prototype, 'add', [_dec], (0, _getOwnPropertyDescriptor2.default)(_class.prototype, 'add'), _class.prototype)), _class));
 exports.default = Commander;

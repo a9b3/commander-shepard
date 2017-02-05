@@ -3,6 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 exports.parsePkg = parsePkg;
 exports.parseArgv = parseArgv;
 exports.requiredKeysInOpt = requiredKeysInOpt;
@@ -17,18 +22,18 @@ function parsePkg(pkg) {
   (0, _invariant2.default)(pkg.name, 'Must set \'name\' in package.json');
   (0, _invariant2.default)(pkg.version, 'Must set \'version\' in package.json');
   (0, _invariant2.default)(pkg.bin, 'Must set \'bin\' in package.json');
-  (0, _invariant2.default)(Object.keys(pkg.bin)[0], 'Must set a value in \'bin\' in package.json');
+  (0, _invariant2.default)((0, _keys2.default)(pkg.bin)[0], 'Must set a value in \'bin\' in package.json');
 
   return {
     name: pkg.name,
     version: pkg.version,
-    commandName: Object.keys(pkg.bin)[0]
+    commandName: (0, _keys2.default)(pkg.bin)[0]
   };
 }
 
 // nicer names
 function parseArgv(argv) {
-  var options = Object.keys(argv).reduce(function (map, key) {
+  var options = (0, _keys2.default)(argv).reduce(function (map, key) {
     if (['_'].indexOf(key) !== -1) {
       return map;
     }
