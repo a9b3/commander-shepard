@@ -46,7 +46,9 @@ var Commander = function () {
     this.configs = {};
     this.flags = {};
 
-    this.configure(configs);
+    if (configs) {
+      this.configure(configs);
+    }
   }
 
   (0, _createClass3.default)(Commander, [{
@@ -71,18 +73,17 @@ var Commander = function () {
     value: function getCommandNode(keys) {
       var keysCopy = keys.slice();
       var cursor = this.configs;
-      var key = keysCopy.shift();
       var keysFound = [];
 
       while (cursor) {
         var keyFound = false;
 
         for (var i = 0; i < (cursor.subcommands || []).length; i++) {
-          if (cursor.subcommands[i].key === key) {
+          if (cursor.subcommands[i].key === keysCopy[0]) {
             cursor = cursor.subcommands[i];
             keyFound = true;
-            keysFound.push(key);
-            key = keysCopy.shift();
+            keysFound.push(keysCopy[0]);
+            keysCopy.shift();
             break;
           }
         }
