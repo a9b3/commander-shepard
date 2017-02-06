@@ -44,6 +44,7 @@ var Commander = function () {
   function Commander() {
     (0, _classCallCheck3.default)(this, Commander);
     this.configs = {};
+    this.flags = {};
   }
 
   (0, _createClass3.default)(Commander, [{
@@ -57,6 +58,11 @@ var Commander = function () {
         keys: ['v', 'version'],
         shortDescription: 'show version'
       }]);
+
+      var _parseArgv = parseArgv(),
+          flags = _parseArgv.flags;
+
+      this.flags = flags;
     }
   }, {
     key: 'getCommandNode',
@@ -130,9 +136,9 @@ var Commander = function () {
   }, {
     key: 'execute',
     value: function execute() {
-      var _parseArgv = parseArgv(),
-          flags = _parseArgv.flags,
-          commands = _parseArgv.commands;
+      var _parseArgv2 = parseArgv(),
+          flags = _parseArgv2.flags,
+          commands = _parseArgv2.commands;
 
       // handle special case -h --help
 
