@@ -50,6 +50,13 @@ var Commander = function () {
     key: 'configure',
     value: function configure(configs) {
       this.configs = configs;
+      this.configs.flags = (this.configs.flags || []).concat([{
+        keys: ['h', 'help'],
+        shortDescription: 'show help'
+      }, {
+        keys: ['v', 'version'],
+        shortDescription: 'show version'
+      }]);
     }
   }, {
     key: 'getCommandNode',
