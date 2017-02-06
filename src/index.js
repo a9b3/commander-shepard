@@ -23,6 +23,7 @@ function paddedStr(col, col2, leftMaxStrLength = 0) {
 
 export default class Commander {
   configs = {}
+  flags = {}
 
   constructor() {
 
@@ -40,6 +41,8 @@ export default class Commander {
         shortDescription: 'show version',
       },
     ])
+    const { flags } = parseArgv()
+    this.flags = flags
   }
 
   getCommandNode(keys) {
