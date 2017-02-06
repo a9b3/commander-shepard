@@ -115,7 +115,7 @@ export default class Commander {
         throw new Error(`${commands.join(' ')} is not a valid command`)
       }
       // TODO add arg checking here, for required flags and args
-      commandNode.command(args, flags)
+      commandNode.command({ args, flags })
     }
   }
 }
