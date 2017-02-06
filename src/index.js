@@ -26,7 +26,9 @@ export default class Commander {
   flags = {}
 
   constructor(configs) {
-    this.configure(configs)
+    if (configs) {
+      this.configure(configs)
+    }
   }
 
   configure(configs) {
@@ -48,18 +50,17 @@ export default class Commander {
   getCommandNode(keys) {
     const keysCopy = keys.slice()
     let cursor = this.configs
-    let key = keysCopy.shift()
     const keysFound = []
 
     while(cursor) {
       let keyFound = false
 
       for (let i = 0; i < (cursor.subcommands || []).length; i++) {
-        if (cursor.subcommands[i].key === key) {
+        if (cursor.subcommands[i].key === keysCopy[0]) {
           cursor = cursor.subcommands[i]
           keyFound = true
-          keysFound.push(key)
-          key = keysCopy.shift()
+          keysFound.push(keysCopy[0])
+          keysCopy.shift()
           break
         }
       }
