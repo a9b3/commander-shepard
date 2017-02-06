@@ -25,8 +25,8 @@ export default class Commander {
   configs = {}
   flags = {}
 
-  constructor() {
-
+  constructor(configs) {
+    this.configure(configs)
   }
 
   configure(configs) {
