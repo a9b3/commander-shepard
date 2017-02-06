@@ -41,10 +41,12 @@ function paddedStr(col, col2) {
 }
 
 var Commander = function () {
-  function Commander() {
+  function Commander(configs) {
     (0, _classCallCheck3.default)(this, Commander);
     this.configs = {};
     this.flags = {};
+
+    this.configure(configs);
   }
 
   (0, _createClass3.default)(Commander, [{
