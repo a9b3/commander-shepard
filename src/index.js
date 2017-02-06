@@ -125,6 +125,9 @@ export default class Commander {
     } else {
       const { node: commandNode, args } = this.getCommandNode(commands)
       if (!commandNode || !commandNode.command) {
+        if (commands.length === 0) {
+          return this.help(commands)
+        }
         throw new Error(`${commands.join(' ')} is not a valid command`)
       }
       // TODO add arg checking here, for required flags and args
