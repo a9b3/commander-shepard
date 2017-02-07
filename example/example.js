@@ -39,6 +39,7 @@ commander.configure({
           shortDescription: 'f ok',
         },
       ],
+      requiredArgs: ['<inventory>'],
       command: () => {
         console.log(`called foo`)
       },
