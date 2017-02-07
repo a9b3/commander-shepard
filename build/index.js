@@ -129,7 +129,8 @@ var Commander = function () {
       if (commandNode.longDescription) {
         console.log('\n', '' + commandNode.longDescription);
       }
-      console.log('\n', 'Usage: ' + (this.configs.key + ' ') + (commandKeys.length === 0 ? '' : commandKeys.join(' ')) + ' ' + (commandDisplayLines ? '[command]' : '') + ' ' + (flagDisplayLines ? '[flags]' : ''), '\n', flagDisplayLines ? flagDisplayLines + '\n' : '', commandDisplayLines ? commandDisplayLines + '\n' : '');
+
+      console.log('\n', 'Usage: ' + (this.configs.key + ' ') + (commandKeys.length === 0 ? '' : commandKeys.join(' ')) + (commandNode.requiredArgs ? ' ' + commandNode.requiredArgs.join(' ') : '') + ' ' + (commandDisplayLines ? '[command]' : '') + ' ' + (flagDisplayLines ? '[flags]' : ''), '\n', flagDisplayLines ? flagDisplayLines + '\n' : '', commandDisplayLines ? commandDisplayLines + '\n' : '');
     }
   }, {
     key: 'version',
