@@ -51,9 +51,11 @@ export default class Commander {
     const keysCopy = keys.slice()
     let cursor = this.configs
     const keysFound = []
+    let requiredFlags = []
 
     while(cursor) {
       let keyFound = false
+      requiredFlags = requiredFlags.concat((cursor.flags || []).map(f => f.required && f).filter(a => a))
 
       for (let i = 0; i < (cursor.subcommands || []).length; i++) {
         if (cursor.subcommands[i].key === keysCopy[0]) {
@@ -74,6 +76,7 @@ export default class Commander {
       node: cursor,
       commandKeys: keysFound,
       args: keysCopy,
+      requiredFlags,
     }
   }
 
@@ -125,13 +128,25 @@ export default class Commander {
     } else if (flags.v || flags.version) {
       this.version()
     } else {
-      const { node: commandNode, args } = this.getCommandNode(commands)
+      const { node: commandNode, args, requiredFlags } = this.getCommandNode(commands)
+
+      // Handle missing required flags
+      const missingRequiredFlags = requiredFlags.map(r => {
+        if (!r.keys.some(key => flags[key])) {
+          return r.keys
+        }
+      }).filter(a => a)
+      if (missingRequiredFlags.length > 0) {
+        throw new Error(`Missing required flags [${missingRequiredFlags.join(', ')}].`)
+      }
+
       if (!commandNode || !commandNode.command) {
         if (commands.length === 0) {
           return this.help(commands)
         }
         throw new Error(`${commands.join(' ')} is not a valid command`)
       }
+
       // TODO add arg checking here, for required flags and args
       commandNode.command({ args, flags })
     }
