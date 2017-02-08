@@ -74,9 +74,15 @@ var Commander = function () {
       var keysCopy = keys.slice();
       var cursor = this.configs;
       var keysFound = [];
+      var requiredFlags = [];
 
       while (cursor) {
         var keyFound = false;
+        requiredFlags = requiredFlags.concat((cursor.flags || []).map(function (f) {
+          return f.required && f;
+        }).filter(function (a) {
+          return a;
+        }));
 
         for (var i = 0; i < (cursor.subcommands || []).length; i++) {
           if (cursor.subcommands[i].key === keysCopy[0]) {
@@ -96,7 +102,8 @@ var Commander = function () {
       return {
         node: cursor,
         commandKeys: keysFound,
-        args: keysCopy
+        args: keysCopy,
+        requiredFlags: requiredFlags
       };
     }
   }, {
@@ -154,7 +161,24 @@ var Commander = function () {
       } else {
         var _getCommandNode2 = this.getCommandNode(commands),
             commandNode = _getCommandNode2.node,
-            args = _getCommandNode2.args;
+            args = _getCommandNode2.args,
+            requiredFlags = _getCommandNode2.requiredFlags;
+
+        // Handle missing required flags
+
+
+        var missingRequiredFlags = requiredFlags.map(function (r) {
+          if (!r.keys.some(function (key) {
+            return flags[key];
+          })) {
+            return r.keys;
+          }
+        }).filter(function (a) {
+          return a;
+        });
+        if (missingRequiredFlags.length > 0) {
+          throw new Error('Missing required flags [' + missingRequiredFlags.join(', ') + '].');
+        }
 
         if (!commandNode || !commandNode.command) {
           if (commands.length === 0) {
@@ -162,6 +186,7 @@ var Commander = function () {
           }
           throw new Error(commands.join(' ') + ' is not a valid command');
         }
+
         // TODO add arg checking here, for required flags and args
         commandNode.command({ args: args, flags: flags });
       }

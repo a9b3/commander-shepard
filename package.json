@@ -1,6 +1,6 @@
 {
   "name": "commander-shepard",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "main": "build/index.js",
   "description": "Little framework for building command line tools",
   "author": "Sam Lau <esayemm@gmail.com>",
