@@ -71,3 +71,6 @@ commander.configure({
   ]
 })
 commander.execute()
+.catch((e) => {
+  console.log(e)
+})

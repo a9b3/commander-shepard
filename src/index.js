@@ -1,27 +1,5 @@
-function parseArgv() {
-  const argv = require('yargs').argv
-  return {
-    flags: argv,
-    commands: argv._,
-  }
-}
-
-function paddedStr(col, col2, leftMaxStrLength = 0) {
-  col.forEach(s => {
-    if (s.length > leftMaxStrLength) {
-      leftMaxStrLength = s.length
-    }
-  })
-
-  leftMaxStrLength += 5
-
-  return col.map((s, i) => {
-    const spacing = leftMaxStrLength - s.length
-    return `${s}${' '.repeat(spacing)}${col2[i]}`
-  })
-}
-
 export default class Commander {
+
   configs = {}
   flags = {}
 
@@ -119,36 +97,65 @@ export default class Commander {
     )
   }
 
-  execute() {
-    const { flags, commands } = parseArgv()
+  async execute() {
+    try {
+      const { flags, commands } = parseArgv()
 
-    // handle special case -h --help
-    if (flags.h || flags.help) {
-      this.help(commands)
-    } else if (flags.v || flags.version) {
-      this.version()
-    } else {
-      const { node: commandNode, args, requiredFlags } = this.getCommandNode(commands)
+      // handle special case -h --help
+      if (flags.h || flags.help) {
+        this.help(commands)
+      } else if (flags.v || flags.version) {
+        this.version()
+      } else {
+        const { node: commandNode, args, requiredFlags } = this.getCommandNode(commands)
 
-      // Handle missing required flags
-      const missingRequiredFlags = requiredFlags.map(r => {
-        if (!r.keys.some(key => flags[key])) {
-          return r.keys
+        // Handle missing required flags
+        const missingRequiredFlags = requiredFlags.map(r => {
+          if (!r.keys.some(key => flags[key])) {
+            return r.keys
+          }
+        }).filter(a => a)
+
+        if (missingRequiredFlags.length > 0) {
+          throw new Error(`Missing required flags [${missingRequiredFlags.join(', ')}].`)
         }
-      }).filter(a => a)
-      if (missingRequiredFlags.length > 0) {
-        throw new Error(`Missing required flags [${missingRequiredFlags.join(', ')}].`)
-      }
 
-      if (!commandNode || !commandNode.command) {
-        if (commands.length === 0) {
-          return this.help(commands)
+        if (!commandNode || !commandNode.command) {
+          if (commands.length === 0) {
+            return this.help(commands)
+          }
+          throw new Error(`${commands.join(' ')} is not a valid command`)
         }
-        throw new Error(`${commands.join(' ')} is not a valid command`)
-      }
 
-      // TODO add arg checking here, for required flags and args
-      commandNode.command({ args, flags })
+        // TODO add arg checking here, for required flags and args
+        await commandNode.command({ args, flags })
+      }
+    } catch (e) {
+      console.log((e || {}).message || '')
     }
   }
+
+}
+
+function parseArgv() {
+  const argv = require('yargs').argv
+  return {
+    flags: argv,
+    commands: argv._,
+  }
+}
+
+function paddedStr(col, col2, leftMaxStrLength = 0) {
+  col.forEach(s => {
+    if (s.length > leftMaxStrLength) {
+      leftMaxStrLength = s.length
+    }
+  })
+
+  leftMaxStrLength += 5
+
+  return col.map((s, i) => {
+    const spacing = leftMaxStrLength - s.length
+    return `${s}${' '.repeat(spacing)}${col2[i]}`
+  })
 }
