@@ -5,6 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = undefined;
 
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -14,31 +26,6 @@ var _createClass2 = require('babel-runtime/helpers/createClass');
 var _createClass3 = _interopRequireDefault(_createClass2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function parseArgv() {
-  var argv = require('yargs').argv;
-  return {
-    flags: argv,
-    commands: argv._
-  };
-}
-
-function paddedStr(col, col2) {
-  var leftMaxStrLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-
-  col.forEach(function (s) {
-    if (s.length > leftMaxStrLength) {
-      leftMaxStrLength = s.length;
-    }
-  });
-
-  leftMaxStrLength += 5;
-
-  return col.map(function (s, i) {
-    var spacing = leftMaxStrLength - s.length;
-    return '' + s + ' '.repeat(spacing) + col2[i];
-  });
-}
 
 var Commander = function () {
   function Commander(configs) {
@@ -146,53 +133,161 @@ var Commander = function () {
     }
   }, {
     key: 'execute',
-    value: function execute() {
-      var _parseArgv2 = parseArgv(),
-          flags = _parseArgv2.flags,
-          commands = _parseArgv2.commands;
+    value: function () {
+      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+        var _this = this;
 
-      // handle special case -h --help
+        var _ret;
 
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                return _context2.delegateYield(_regenerator2.default.mark(function _callee() {
+                  var _parseArgv2, flags, commands, _getCommandNode2, commandNode, args, requiredFlags, missingRequiredFlags;
 
-      if (flags.h || flags.help) {
-        this.help(commands);
-      } else if (flags.v || flags.version) {
-        this.version();
-      } else {
-        var _getCommandNode2 = this.getCommandNode(commands),
-            commandNode = _getCommandNode2.node,
-            args = _getCommandNode2.args,
-            requiredFlags = _getCommandNode2.requiredFlags;
+                  return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          _parseArgv2 = parseArgv(), flags = _parseArgv2.flags, commands = _parseArgv2.commands;
 
-        // Handle missing required flags
+                          // handle special case -h --help
 
+                          if (!(flags.h || flags.help)) {
+                            _context.next = 5;
+                            break;
+                          }
 
-        var missingRequiredFlags = requiredFlags.map(function (r) {
-          if (!r.keys.some(function (key) {
-            return flags[key];
-          })) {
-            return r.keys;
+                          _this.help(commands);
+                          _context.next = 19;
+                          break;
+
+                        case 5:
+                          if (!(flags.v || flags.version)) {
+                            _context.next = 9;
+                            break;
+                          }
+
+                          _this.version();
+                          _context.next = 19;
+                          break;
+
+                        case 9:
+                          _getCommandNode2 = _this.getCommandNode(commands), commandNode = _getCommandNode2.node, args = _getCommandNode2.args, requiredFlags = _getCommandNode2.requiredFlags;
+
+                          // Handle missing required flags
+
+                          missingRequiredFlags = requiredFlags.map(function (r) {
+                            if (!r.keys.some(function (key) {
+                              return flags[key];
+                            })) {
+                              return r.keys;
+                            }
+                          }).filter(function (a) {
+                            return a;
+                          });
+
+                          if (!(missingRequiredFlags.length > 0)) {
+                            _context.next = 13;
+                            break;
+                          }
+
+                          throw new Error('Missing required flags [' + missingRequiredFlags.join(', ') + '].');
+
+                        case 13:
+                          if (!(!commandNode || !commandNode.command)) {
+                            _context.next = 17;
+                            break;
+                          }
+
+                          if (!(commands.length === 0)) {
+                            _context.next = 16;
+                            break;
+                          }
+
+                          return _context.abrupt('return', {
+                            v: _this.help(commands)
+                          });
+
+                        case 16:
+                          throw new Error(commands.join(' ') + ' is not a valid command');
+
+                        case 17:
+                          _context.next = 19;
+                          return commandNode.command({ args: args, flags: flags });
+
+                        case 19:
+                        case 'end':
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee, _this);
+                })(), 't0', 2);
+
+              case 2:
+                _ret = _context2.t0;
+
+                if (!((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object")) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                return _context2.abrupt('return', _ret.v);
+
+              case 5:
+                _context2.next = 10;
+                break;
+
+              case 7:
+                _context2.prev = 7;
+                _context2.t1 = _context2['catch'](0);
+
+                console.log((_context2.t1 || {}).message || '');
+
+              case 10:
+              case 'end':
+                return _context2.stop();
+            }
           }
-        }).filter(function (a) {
-          return a;
-        });
-        if (missingRequiredFlags.length > 0) {
-          throw new Error('Missing required flags [' + missingRequiredFlags.join(', ') + '].');
-        }
+        }, _callee2, this, [[0, 7]]);
+      }));
 
-        if (!commandNode || !commandNode.command) {
-          if (commands.length === 0) {
-            return this.help(commands);
-          }
-          throw new Error(commands.join(' ') + ' is not a valid command');
-        }
-
-        // TODO add arg checking here, for required flags and args
-        commandNode.command({ args: args, flags: flags });
+      function execute() {
+        return _ref.apply(this, arguments);
       }
-    }
+
+      return execute;
+    }()
   }]);
   return Commander;
 }();
 
 exports.default = Commander;
+
+
+function parseArgv() {
+  var argv = require('yargs').argv;
+  return {
+    flags: argv,
+    commands: argv._
+  };
+}
+
+function paddedStr(col, col2) {
+  var leftMaxStrLength = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+
+  col.forEach(function (s) {
+    if (s.length > leftMaxStrLength) {
+      leftMaxStrLength = s.length;
+    }
+  });
+
+  leftMaxStrLength += 5;
+
+  return col.map(function (s, i) {
+    var spacing = leftMaxStrLength - s.length;
+    return '' + s + ' '.repeat(spacing) + col2[i];
+  });
+}
