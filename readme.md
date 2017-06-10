@@ -41,7 +41,7 @@ fooSubcommand.use('bar', new Command({
     // do something
   },
 }))
-commander.use('foo', hiHandler)
+commander.use('foo', fooSubcommand)
 
 commander.start()
 .catch((e) => {
