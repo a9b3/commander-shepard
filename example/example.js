@@ -1,76 +1,44 @@
-import Commander from '../src/index.js'
+import {
+  Commander,
+  Command,
+} from '../src/index.js'
 
-const commander = new Commander()
-commander.configure({
-  key: `foo`,
-  package: {
-    name: 'test',
-    version: '1.0.0',
-  },
-  command: (args, flags) => {
-    console.log(`args`, args, flags)
+const commander = new Commander({
+  key: 'commander',
+  package: require('../package.json'),
+  longDescription: 'this is the commander',
+  handler: ({ commands }) => {
+    // do something
   },
   flags: [
     {
-      keys: ['h', 'help'],
-      required: false,
-      shortDescription: 'hi',
-    },
-    {
-      keys: ['foo'],
       required: true,
-      shortDescription: 'hoo',
-    },
-    {
-      keys: ['super-long-key'],
-      required: true,
-      shortDescription: 'hoo',
+      keys: ['f', 'foo-flag'],
+      description: 'f flag description',
     },
   ],
-  subcommands: [
+  commands: [
     {
-      key: 'foo',
-      shortDescription: 'short description',
-      longDescription: 'blahblahblah',
-      flags: [
-        {
-          keys: ['b'],
-          required: true,
-          shortDescription: 'f ok',
-        },
-      ],
-      requiredArgs: ['<inventory>'],
-      command: () => {
-        console.log(`called foo`)
-      },
-      subcommands: [
-        {
-          key: 'bar',
-          shortDescription: 'short description',
-          longDescription: 'cool stuff',
-          command: () => {
-            console.log(`called bar`)
-          },
-        },
-        {
-          key: 'zed',
-          shortDescription: 'zed',
-          command: () => {
-            console.log(`called bar`)
-          },
-        },
-      ],
+      required: true,
+      key: 'foo argument',
+      description: 'required first arg',
     },
-    {
-      key: 'zed',
-      shortDescription: 'zed',
-      command: () => {
-
-      },
-    },
-  ]
+  ],
 })
-commander.execute()
+
+const fooSubcommand = new Command({
+  handler: async ({ commands }) => {
+    // do something
+  },
+})
+fooSubcommand.use('bar', new Command({
+  handler: ({ commands }) => {
+    // do something
+  },
+}))
+commander.use('foo', fooSubcommand)
+
+commander.start()
 .catch((e) => {
-  console.log(e)
+  console.error('error', e.message)
 })
