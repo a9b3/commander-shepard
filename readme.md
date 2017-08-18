@@ -8,20 +8,6 @@ yarn add commander-shepard --save
 
 ## Usage
 
-#### Initialize top level commander
-
-```
-import {Commander} from 'commander-shepard'
-
-const commander = new Commander({
-	key: 'commander', 
-	package: require(''),
-})
-```
-
-
-#### Full example
-
 ```js
 import { Commander, Command } from 'commander-shepard'
 

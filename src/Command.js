@@ -33,12 +33,13 @@ export default class Command {
   commands = []
 
   /**
-   * @param {!string} key
-   * @param {function} handler
+   * @param {!string} key - Key to reference this command by, also what it will
+   * be called with by the end user.
+   * @param {function} handler - Function to run when this command is evoked.
    * @param {string} longDescription
    * @param {string} shortDescription
    * @param {Command} parent - parent node
-   * @param {array<string>} flags
+   * @param {array<string>} flags - Flags accepted by this command.
    * @param {array<function>} commands
    */
   constructor(opt = {}) {
