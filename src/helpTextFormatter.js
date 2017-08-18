@@ -2,7 +2,7 @@ function strWithPadding(str, paddingSize, padding = 2) {
   return str + ' '.repeat(paddingSize - str.length + padding)
 }
 
-export default const helpText = {
+export default {
   subheader: {
     calculateLeftPadding({ subcommands = {}, commands = [], flags = [] } = {}) {
       let max = 0
