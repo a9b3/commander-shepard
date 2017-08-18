@@ -29,16 +29,34 @@ var _chalk = require('chalk');
 
 var _chalk2 = _interopRequireDefault(_chalk);
 
+var _helpTextFormatter = require('./helpTextFormatter.js');
+
+var _helpTextFormatter2 = _interopRequireDefault(_helpTextFormatter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Command = function () {
 
+  /**
+   * @param {!string} key - Key to reference this command by, also what it will
+   * be called with by the end user.
+   * @param {function} handler - Function to run when this command is evoked.
+   * @param {string} longDescription
+   * @param {string} shortDescription
+   * @param {Command} parent - parent node
+   * @param {array<string>} flags - Flags accepted by this command.
+   * @param {array<function>} commands
+   */
+
+
   /*
-   * {
+   * Format:
+   *
+   * [{
    *   required: true,
    *   keys: ['b', 'foo-flag'],
    *   description: '',
-   * }
+   * }, ...]
    */
   function Command() {
     var _this = this;
@@ -57,7 +75,7 @@ var Command = function () {
     this.commands = [];
 
     this.runHandler = function () {
-      var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
+      var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref) {
         var flags = _ref.flags,
             commands = _ref.commands;
         return _regenerator2.default.wrap(function _callee$(_context) {
@@ -73,8 +91,8 @@ var Command = function () {
 
               case 2:
 
-                _this._checkFlags(flags);
-                _this._checkCommands(commands);
+                _this._validateRuntimeFlags(flags);
+                _this._validateRuntimeCommands(commands);
 
                 return _context.abrupt('return', _this.handler({ flags: flags, commands: commands }));
 
@@ -100,18 +118,94 @@ var Command = function () {
     this.commands = opt.commands || this.commands;
   }
 
+  /**
+   * Prints info regarding this command eg. subcommands, arguments, flags
+   */
+
+
   /*
-   * {
+   * Format:
+   *
+   * [{
    *   required: true,
    *   key: 'hi',
    *   description: '',
-   * }
+   * }, ...]
    */
 
 
   (0, _createClass3.default)(Command, [{
-    key: '_checkFlags',
-    value: function _checkFlags() {
+    key: 'help',
+    value: function help() {
+      console.warn('Deprecated use printHelp() instead');
+      this.printHelp();
+    }
+  }, {
+    key: 'printHelp',
+    value: function printHelp() {
+      console.log('');
+
+      if (this.longDescription) {
+        console.log('  ' + this.longDescription);
+        console.log('');
+      }
+
+      var keys = [].concat(_helpTextFormatter2.default.generateLine(this)).concat(_helpTextFormatter2.default.generateCommandText(this.commands)).concat(_helpTextFormatter2.default.generateFlagText(this.flags));
+      console.log('  ' + _chalk2.default.bold('Usage:') + ' ' + keys.join(' '));
+
+      var paddingSize = _helpTextFormatter2.default.subheader.calculateLeftPadding({ subcommands: this.subcommands, commands: this.commands, flags: this.flags });
+
+      if ((0, _keys2.default)(this.subcommands).length > 0) {
+        console.log('');
+        console.log(_chalk2.default.bold('  Subcommands:\n'));
+        console.log(_helpTextFormatter2.default.subheader.subcommands(this.subcommands, { paddingSize: paddingSize, spacing: 4 }));
+      }
+
+      if (this.commands.length > 0) {
+        console.log('');
+        console.log(_chalk2.default.bold('  Arguments:\n'));
+        console.log(_helpTextFormatter2.default.subheader.commands(this.commands, { paddingSize: paddingSize, spacing: 4 }));
+      }
+
+      if (this.flags.length > 0) {
+        console.log('');
+        console.log(_chalk2.default.bold('  Flags:\n'));
+        console.log(_helpTextFormatter2.default.subheader.flags(this.flags, { paddingSize: paddingSize, spacing: 4 }));
+      }
+
+      console.log('');
+    }
+
+    /**
+     * Call the handler for this command with the given flags and arguments.
+     *
+     * @param {array<string>} flags
+     * @param {array<string>} commands
+     */
+
+  }, {
+    key: 'use',
+
+
+    /**
+     * Set a subcommand.
+     *
+     * @param {string} key
+     * @param {function} command
+     */
+    value: function use(key, command) {
+      this.subcommands[key] = command;
+      command.parent = this;
+      command.key = key;
+    }
+
+    /*
+     * Private instance methods
+     */
+
+  }, {
+    key: '_validateRuntimeFlags',
+    value: function _validateRuntimeFlags() {
       var flags = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       for (var i = 0; i < this.flags.length; i++) {
@@ -130,8 +224,8 @@ var Command = function () {
       }
     }
   }, {
-    key: '_checkCommands',
-    value: function _checkCommands() {
+    key: '_validateRuntimeCommands',
+    value: function _validateRuntimeCommands() {
       var commands = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
       for (var i = 0; i < this.commands.length; i++) {
@@ -146,167 +240,8 @@ var Command = function () {
         }
       }
     }
-  }, {
-    key: 'help',
-    value: function help() {
-      console.log('');
-
-      if (this.longDescription) {
-        console.log('  ' + this.longDescription);
-        console.log('');
-      }
-
-      var keys = [].concat(helpText.generateLine(this)).concat(helpText.generateCommandText(this.commands)).concat(helpText.generateFlagText(this.flags));
-      console.log('  ' + _chalk2.default.bold('Usage:') + ' ' + keys.join(' '));
-
-      var paddingSize = helpText.subheader.calculateLeftPadding({ subcommands: this.subcommands, commands: this.commands, flags: this.flags });
-
-      if ((0, _keys2.default)(this.subcommands).length > 0) {
-        console.log('');
-        console.log(_chalk2.default.bold('  Subcommands:\n'));
-        console.log(helpText.subheader.subcommands(this.subcommands, { paddingSize: paddingSize, spacing: 4 }));
-      }
-
-      if (this.commands.length > 0) {
-        console.log('');
-        console.log(_chalk2.default.bold('  Arguments:\n'));
-        console.log(helpText.subheader.commands(this.commands, { paddingSize: paddingSize, spacing: 4 }));
-      }
-
-      if (this.flags.length > 0) {
-        console.log('');
-        console.log(_chalk2.default.bold('  Flags:\n'));
-        console.log(helpText.subheader.flags(this.flags, { paddingSize: paddingSize, spacing: 4 }));
-      }
-
-      console.log('');
-    }
-  }, {
-    key: 'use',
-    value: function use(key, command) {
-      this.subcommands[key] = command;
-      command.parent = this;
-      command.key = key;
-    }
   }]);
   return Command;
 }();
 
 exports.default = Command;
-
-
-function strWithPadding(str, paddingSize) {
-  var padding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
-
-  return str + ' '.repeat(paddingSize - str.length + padding);
-}
-
-var helpText = {
-  subheader: {
-    calculateLeftPadding: function calculateLeftPadding() {
-      var _ref3 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          _ref3$subcommands = _ref3.subcommands,
-          subcommands = _ref3$subcommands === undefined ? {} : _ref3$subcommands,
-          _ref3$commands = _ref3.commands,
-          commands = _ref3$commands === undefined ? [] : _ref3$commands,
-          _ref3$flags = _ref3.flags,
-          flags = _ref3$flags === undefined ? [] : _ref3$flags;
-
-      var max = 0;
-      (0, _keys2.default)(subcommands).map(function (key) {
-        max = key.length > max ? key.length : max;
-      });
-
-      commands.forEach(function (f) {
-        max = f.key.length > max ? f.key.length : max;
-      });
-
-      flags.forEach(function (f) {
-        var keys = f.keys.map(function (key) {
-          return key.length === 1 ? '-' + key : '--' + key;
-        }).join(', ');
-        max = keys.length > max ? keys.length : max;
-      });
-      return max;
-    },
-    subcommands: function subcommands(_subcommands) {
-      var _ref4 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref4$spacing = _ref4.spacing,
-          spacing = _ref4$spacing === undefined ? 2 : _ref4$spacing,
-          paddingSize = _ref4.paddingSize;
-
-      var commandsHelpText = (0, _keys2.default)(_subcommands).map(function (key) {
-        var description = _subcommands[key].shortDescription || '';
-        return '' + ' '.repeat(spacing) + strWithPadding(key, paddingSize, 4) + description;
-      }).join('\n');
-
-      return commandsHelpText;
-    },
-    commands: function commands(_commands) {
-      var _ref5 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref5$spacing = _ref5.spacing,
-          spacing = _ref5$spacing === undefined ? 2 : _ref5$spacing,
-          paddingSize = _ref5.paddingSize;
-
-      var argumentsHelpText = _commands.map(function (f) {
-        var description = f.shortDescription || '';
-        return '' + ' '.repeat(spacing) + strWithPadding(f.key, paddingSize, 4) + description;
-      }).join('\n');
-
-      return argumentsHelpText;
-    },
-    flags: function flags(_flags) {
-      var _ref6 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref6$spacing = _ref6.spacing,
-          spacing = _ref6$spacing === undefined ? 2 : _ref6$spacing,
-          paddingSize = _ref6.paddingSize;
-
-      var flagsText = _flags.map(function (f) {
-        var keys = f.keys.map(function (key) {
-          return key.length === 1 ? '-' + key : '--' + key;
-        }).join(', ');
-        var description = f.shortDescription || '';
-        return '' + ' '.repeat(spacing) + strWithPadding(keys, paddingSize, 4) + description;
-      }).join('\n');
-
-      return flagsText;
-    }
-  },
-
-  generateFlagText: function generateFlagText(flags) {
-    var keys = [];
-    var flagText = flags.reduce(function (map, flag) {
-      if (flag.required) {
-        map.required.push(flag.keys.join('||'));
-      } else {
-        map.optional.push(flag.keys.join('||'));
-      }
-      return map;
-    }, { required: [], optional: [] });
-
-    if (flagText.required.length > 0) {
-      keys.push('<' + flagText.required.join(' ') + '>');
-    }
-    if (flagText.optional.length > 0) {
-      keys.push('[' + flagText.optional.join(' ') + ']');
-    }
-    return keys;
-  },
-  generateCommandText: function generateCommandText(commands) {
-    return commands.map(function (c) {
-      return c.required ? '<' + c.key + '>' : '[' + c.key + ']';
-    });
-  },
-  generateLine: function generateLine(node) {
-    var cursorNode = node.parent;
-    var keys = cursorNode ? [cursorNode.key] : [];
-    while (cursorNode) {
-      cursorNode = cursorNode.parent;
-      if (cursorNode) {
-        keys.unshift(cursorNode.key);
-      }
-    }
-    keys.push(node.key);
-    return keys;
-  }
-};

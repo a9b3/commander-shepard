@@ -1,6 +1,6 @@
 {
   "name": "commander-shepard",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "main": "build/index.js",
   "description": "Little framework for building command line tools",
   "author": "Sam Lau <esayemm@gmail.com>",
@@ -29,6 +29,8 @@
     "yargs": "^6.3.0"
   },
   "babel": {
-		"presets": ["./node_modules/jbs-node/configs/babel-preset-jbs-node.js"]
-	}
+    "presets": [
+      "./node_modules/jbs-node/configs/babel-preset-jbs-node.js"
+    ]
+  }
 }

@@ -47,55 +47,51 @@ var Commander = function (_Command) {
 
     var _this = (0, _possibleConstructorReturn3.default)(this, (Commander.__proto__ || (0, _getPrototypeOf2.default)(Commander)).call(this, opt));
 
-    _this.package = {};
+    _this.packageJson = {};
 
     _this.configure(opt);
     return _this;
   }
+
+  /**
+   * @param {object} packageJson
+   */
+
 
   (0, _createClass3.default)(Commander, [{
     key: 'configure',
     value: function configure() {
       var opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
-      this.package = opt.package;
-    }
-  }, {
-    key: 'version',
-    value: function version() {
-      console.log(this.package.version);
-    }
-  }, {
-    key: '_findCommandNode',
-    value: function _findCommandNode(_commands) {
-      var commands = _commands.slice();
-
-      var cursorKey = commands.shift();
-      var cursorCommand = this;
-
-      while (cursorCommand.subcommands[cursorKey]) {
-        cursorCommand = cursorCommand.subcommands[cursorKey];
-        cursorKey = commands.shift();
+      if (opt.package) {
+        console.warn('Deprecated use packageJson field');
       }
-
-      if (cursorKey) {
-        commands.unshift(cursorKey);
-      }
-
-      return {
-        commandNode: cursorCommand,
-        remainingCommands: commands
-      };
+      this.packageJson = opt.packageJson || opt.package;
     }
 
     /**
-     * Call .catch on this to display errors
+     * Prints the version number.
+     */
+
+  }, {
+    key: 'version',
+    value: function version() {
+      console.warn('Deprecated use printVersion instead');this.printVersion();
+    }
+  }, {
+    key: 'printVersion',
+    value: function printVersion() {
+      console.log(this.packageJson.version);
+    }
+
+    /**
+     * Call .catch on this to display errors.
      */
 
   }, {
     key: 'start',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
         var _parseArgv, flags, commands, _findCommandNode2, commandNode, remainingCommands;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
@@ -130,6 +126,44 @@ var Commander = function (_Command) {
 
       return start;
     }()
+
+    /*
+     * Private instance methods
+     */
+
+    /**
+     * Traverse down tree and find the last corresponding node.
+     *
+     * @param {array<string>} _commands
+     * @returns {object}
+     * {
+     *   commandNode: Command,
+     *   remainingCommands: array<string>,
+     * }
+     */
+
+  }, {
+    key: '_findCommandNode',
+    value: function _findCommandNode(_commands) {
+      var commands = _commands.slice();
+
+      var cursorKey = commands.shift();
+      var cursorCommand = this;
+
+      while (cursorCommand.subcommands[cursorKey]) {
+        cursorCommand = cursorCommand.subcommands[cursorKey];
+        cursorKey = commands.shift();
+      }
+
+      if (cursorKey) {
+        commands.unshift(cursorKey);
+      }
+
+      return {
+        commandNode: cursorCommand,
+        remainingCommands: commands
+      };
+    }
   }]);
   return Commander;
 }(_Command3.default);
