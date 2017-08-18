@@ -12,7 +12,7 @@
   },
   "scripts": {
     "version": "npm run build && git add .",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "npm publish && git push && git push --tags",
     "build": "rm -rf build && ./node_modules/jbs-node/bin.js build --input src --output build"
   },
   "keywords": [
