@@ -1,21 +1,66 @@
 import Command from './Command.js'
 
 export default class Commander extends Command {
-  package = {}
+  packageJson = {}
 
   constructor(opt) {
     super(opt)
     this.configure(opt)
   }
 
+  /**
+   * @param {object} packageJson
+   */
   configure(opt = {}) {
-    this.package = opt.package
+    if (opt.package) {
+      console.warn('Deprecated use packageJson field')
+    }
+    this.packageJson = opt.packageJson || opt.package
   }
 
-  version() {
-    console.log(this.package.version)
+  /**
+   * Prints the version number.
+   */
+  version() {console.warn('Deprecated use printVersion instead'); this.printVersion()}
+  printVersion() {
+    console.log(this.packageJson.version)
   }
 
+  /**
+   * Call .catch on this to display errors.
+   */
+  async start() {
+    const {
+      flags,
+      commands,
+    } = parseArgv()
+
+    if (flags.v || flags.version) {
+      return this.version()
+    }
+
+    const {
+      commandNode,
+      remainingCommands,
+    } = this._findCommandNode(commands)
+
+    await commandNode.runHandler({ flags, commands: remainingCommands })
+  }
+
+  /*
+   * Private instance methods
+   */
+
+  /**
+   * Traverse down tree and find the last corresponding node.
+   *
+   * @param {array<string>} _commands
+   * @returns {object}
+   * {
+   *   commandNode: Command,
+   *   remainingCommands: array<string>,
+   * }
+   */
   _findCommandNode(_commands) {
     const commands = _commands.slice()
 
@@ -35,27 +80,6 @@ export default class Commander extends Command {
       commandNode: cursorCommand,
       remainingCommands: commands,
     }
-  }
-
-  /**
-   * Call .catch on this to display errors
-   */
-  async start() {
-    const {
-      flags,
-      commands,
-    } = parseArgv()
-
-    if (flags.v || flags.version) {
-      return this.version()
-    }
-
-    const {
-      commandNode,
-      remainingCommands,
-    } = this._findCommandNode(commands)
-
-    await commandNode.runHandler({ flags, commands: remainingCommands })
   }
 }
 

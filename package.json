@@ -11,9 +11,9 @@
     "url": "https://github.com/esayemm/commander-shepard"
   },
   "scripts": {
-    "version": "npm run babel && git add .",
+    "version": "npm run build && git add .",
     "postversion": "git push && git push --tags && npm publish",
-    "babel": "rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build"
+    "build": "rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build"
   },
   "keywords": [
     "cli",
