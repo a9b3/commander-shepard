@@ -103,7 +103,7 @@ export default class Command {
    */
   runHandler = async ({ flags, commands }) => {
     if (flags.h || flags.help) {
-      return this.help()
+      return this.printHelp()
     }
 
     this._validateRuntimeFlags(flags)
