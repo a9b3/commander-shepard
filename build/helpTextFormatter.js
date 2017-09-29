@@ -81,7 +81,7 @@ exports.default = {
           return key.length === 1 ? '-' + key : '--' + key;
         }).join(', ');
         var description = f.shortDescription || '';
-        return '' + ' '.repeat(spacing) + strWithPadding(keys, paddingSize, 4) + description;
+        return '' + ' '.repeat(spacing) + strWithPadding('' + keys + (f.required ? '*' : ''), paddingSize, 4) + description;
       }).join('\n');
 
       return flagsText;

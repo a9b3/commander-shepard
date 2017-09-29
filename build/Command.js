@@ -87,7 +87,7 @@ var Command = function () {
                   break;
                 }
 
-                return _context.abrupt('return', _this.help());
+                return _context.abrupt('return', _this.printHelp());
 
               case 2:
 
