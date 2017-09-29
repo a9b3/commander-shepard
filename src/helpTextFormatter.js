@@ -45,7 +45,7 @@ export default {
       const flagsText = flags.map(f => {
         const keys = f.keys.map(key => key.length === 1 ? `-${key}` : `--${key}`).join(', ')
         const description = f.shortDescription || ''
-        return `${' '.repeat(spacing)}${strWithPadding(keys, paddingSize, 4)}${description}`
+        return `${' '.repeat(spacing)}${strWithPadding(`${keys}${f.required ? '*' : ''}`, paddingSize, 4)}${description}`
       })
       .join('\n')
 
