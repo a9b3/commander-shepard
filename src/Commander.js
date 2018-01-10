@@ -6,6 +6,7 @@ export default class Commander extends Command {
   constructor(opt) {
     super(opt)
     this.configure(opt)
+    this.runtimeData = parseArgv()
   }
 
   /**
@@ -30,20 +31,14 @@ export default class Commander extends Command {
    * Call .catch on this to display errors.
    */
   async start() {
-    const {
-      flags,
-      commands,
-    } = parseArgv()
-
+    const { flags, commands } = parseArgv()
     if (flags.v || flags.version) {
       return this.version()
     }
-
     const {
       commandNode,
       remainingCommands,
     } = this._findCommandNode(commands)
-
     await commandNode.runHandler({ flags, commands: remainingCommands })
   }
 
