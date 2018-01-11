@@ -15,54 +15,76 @@ export default {
       })
 
       flags.forEach(f => {
-        const keys = f.keys.map(key => key.length === 1 ? `-${key}` : `--${key}`).join(', ')
+        const keys = f.keys
+          .map(key => (key.length === 1 ? `-${key}` : `--${key}`))
+          .join(', ')
         max = keys.length > max ? keys.length : max
       })
       return max
     },
 
     subcommands(subcommands, { spacing = 2, paddingSize } = {}) {
-      const commandsHelpText = Object.keys(subcommands).map(key => {
-        const description = subcommands[key].shortDescription || ''
-        return `${' '.repeat(spacing)}${strWithPadding(key, paddingSize, 4)}${description}`
-      })
-      .join('\n')
+      const commandsHelpText = Object.keys(subcommands)
+        .map(key => {
+          const description = subcommands[key].shortDescription || ''
+          return `${' '.repeat(spacing)}${strWithPadding(
+            key,
+            paddingSize,
+            4,
+          )}${description}`
+        })
+        .join('\n')
 
       return commandsHelpText
     },
 
     commands(commands, { spacing = 2, paddingSize } = {}) {
-      const argumentsHelpText = commands.map(f => {
-        const description = f.shortDescription || ''
-        return `${' '.repeat(spacing)}${strWithPadding(f.key, paddingSize, 4)}${description}`
-      })
-      .join('\n')
+      const argumentsHelpText = commands
+        .map(f => {
+          const description = f.shortDescription || ''
+          return `${' '.repeat(spacing)}${strWithPadding(
+            f.key,
+            paddingSize,
+            4,
+          )}${description}`
+        })
+        .join('\n')
 
       return argumentsHelpText
     },
 
     flags(flags, { spacing = 2, paddingSize } = {}) {
-      const flagsText = flags.map(f => {
-        const keys = f.keys.map(key => key.length === 1 ? `-${key}` : `--${key}`).join(', ')
-        const description = f.shortDescription || ''
-        return `${' '.repeat(spacing)}${strWithPadding(`${keys}${f.required ? '*' : ''}`, paddingSize, 4)}${description}`
-      })
-      .join('\n')
+      const flagsText = flags
+        .map(f => {
+          const keys = f.keys
+            .map(key => (key.length === 1 ? `-${key}` : `--${key}`))
+            .join(', ')
+          const description = f.shortDescription || ''
+          return `${' '.repeat(spacing)}${strWithPadding(
+            `${keys}${f.required ? '*' : ''}`,
+            paddingSize,
+            4,
+          )}${description}`
+        })
+        .join('\n')
 
       return flagsText
     },
   },
 
   generateFlagText(flags) {
-    let keys = []
-    const flagText = flags.reduce((map, flag) => {
-      if (flag.required) {
-        map.required.push(flag.keys.join('||'))
-      } else {
-        map.optional.push(flag.keys.join('||'))
-      }
-      return map
-    }, {required: [], optional: []})
+    const keys = []
+    const flagText = flags.reduce(
+      (map, flag) => {
+        if (flag.required) {
+          map.required.push(flag.keys.join('||'))
+        } else {
+          map.optional.push(flag.keys.join('||'))
+        }
+        return map
+      },
+      { required: [], optional: [] },
+    )
 
     if (flagText.required.length > 0) {
       keys.push(`<${flagText.required.join(' ')}>`)
@@ -74,13 +96,13 @@ export default {
   },
 
   generateCommandText(commands) {
-    return commands.map(c => c.required ? `<${c.key}>` : `[${c.key}]`)
+    return commands.map(c => (c.required ? `<${c.key}>` : `[${c.key}]`))
   },
 
   generateLine(node) {
     let cursorNode = node.parent
-    let keys = cursorNode ? [cursorNode.key] : []
-    while(cursorNode) {
+    const keys = cursorNode ? [cursorNode.key] : []
+    while (cursorNode) {
       cursorNode = cursorNode.parent
       if (cursorNode) {
         keys.unshift(cursorNode.key)

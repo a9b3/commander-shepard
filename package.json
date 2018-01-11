@@ -22,7 +22,10 @@
     "command line tool"
   ],
   "devDependencies": {
-    "jbs-node": "^0.0.3"
+    "eslint": "4.15.0",
+    "eslint-config-esayemm": "2.0.19",
+    "jbs-node": "^0.0.3",
+    "prettier": "1.10.2"
   },
   "dependencies": {
     "chalk": "^1.1.3",

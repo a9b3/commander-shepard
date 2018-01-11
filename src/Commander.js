@@ -22,7 +22,10 @@ export default class Commander extends Command {
   /**
    * Prints the version number.
    */
-  version() {console.warn('Deprecated use printVersion instead'); this.printVersion()}
+  version() {
+    console.warn('Deprecated use printVersion instead')
+    this.printVersion()
+  }
   printVersion() {
     console.log(this.packageJson.version)
   }
@@ -35,10 +38,7 @@ export default class Commander extends Command {
     if (flags.v || flags.version) {
       return this.printVersion()
     }
-    const {
-      commandNode,
-      remainingCommands,
-    } = this._findCommandNode(commands)
+    const { commandNode, remainingCommands } = this._findCommandNode(commands)
     await commandNode.runHandler({ flags, commands: remainingCommands })
   }
 
@@ -62,7 +62,7 @@ export default class Commander extends Command {
     let cursorKey = commands.shift()
     let cursorCommand = this
 
-    while(cursorCommand.subcommands[cursorKey]) {
+    while (cursorCommand.subcommands[cursorKey]) {
       cursorCommand = cursorCommand.subcommands[cursorKey]
       cursorKey = commands.shift()
     }

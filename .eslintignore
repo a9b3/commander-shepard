@@ -1,0 +1,7 @@
+bin/
+build/
+lib/
+node_modules/
+examples/
+**/templates/**/*.js
+**/templates/*.js

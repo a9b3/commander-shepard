@@ -1,5 +1,5 @@
-import chalk from 'chalk'
 import helpTextFormatter from './helpTextFormatter.js'
+import chalk             from 'chalk'
 
 export default class Command {
   parent = null
@@ -67,29 +67,49 @@ export default class Command {
       console.log(``)
     }
 
-    const keys = [].concat(helpTextFormatter.generateLine(this))
+    const keys = []
+      .concat(helpTextFormatter.generateLine(this))
       .concat(helpTextFormatter.generateCommandText(this.commands))
       .concat(helpTextFormatter.generateFlagText(this.flags))
     console.log(`  ${chalk.bold('Usage:')} ${keys.join(' ')}`)
 
-    const paddingSize = helpTextFormatter.subheader.calculateLeftPadding({ subcommands: this.subcommands, commands: this.commands, flags: this.flags })
+    const paddingSize = helpTextFormatter.subheader.calculateLeftPadding({
+      subcommands: this.subcommands,
+      commands: this.commands,
+      flags: this.flags,
+    })
 
     if (Object.keys(this.subcommands).length > 0) {
       console.log(``)
       console.log(chalk.bold(`  Subcommands:\n`))
-      console.log(helpTextFormatter.subheader.subcommands(this.subcommands, { paddingSize, spacing: 4 }))
+      console.log(
+        helpTextFormatter.subheader.subcommands(this.subcommands, {
+          paddingSize,
+          spacing: 4,
+        }),
+      )
     }
 
     if (this.commands.length > 0) {
       console.log(``)
       console.log(chalk.bold(`  Arguments:\n`))
-      console.log(helpTextFormatter.subheader.commands(this.commands, { paddingSize, spacing: 4 }))
+      console.log(
+        helpTextFormatter.subheader.commands(this.commands, {
+          paddingSize,
+          spacing: 4,
+        }),
+      )
     }
 
     if (this.flags.length > 0) {
       console.log(``)
       console.log(chalk.bold(`  Flags:\n`))
-      console.log(helpTextFormatter.subheader.flags(this.flags, { paddingSize, spacing: 4 }))
+      console.log(
+        helpTextFormatter.subheader.flags(this.flags, {
+          paddingSize,
+          spacing: 4,
+        }),
+      )
     }
 
     console.log(``)
@@ -138,7 +158,9 @@ export default class Command {
 
       const containsFlag = cursorFlag.keys.some(key => Boolean(flags[key]))
       if (!containsFlag) {
-        throw new Error(`required flag '${cursorFlag.keys.join(' or ')}' missing`)
+        throw new Error(
+          `required flag '${cursorFlag.keys.join(' or ')}' missing`,
+        )
       }
     }
   }
@@ -151,10 +173,9 @@ export default class Command {
         continue
       }
 
-      if (!Boolean(commands[i])) {
+      if (!commands[i]) {
         throw new Error(`required argument '${cursorCommand.key}' missing`)
       }
     }
   }
-
 }
