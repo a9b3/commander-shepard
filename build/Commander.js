@@ -50,6 +50,7 @@ var Commander = function (_Command) {
     _this.packageJson = {};
 
     _this.configure(opt);
+    _this.runtimeData = parseArgv();
     return _this;
   }
 
@@ -105,7 +106,7 @@ var Commander = function (_Command) {
                   break;
                 }
 
-                return _context.abrupt('return', this.version());
+                return _context.abrupt('return', this.printVersion());
 
               case 3:
                 _findCommandNode2 = this._findCommandNode(commands), commandNode = _findCommandNode2.commandNode, remainingCommands = _findCommandNode2.remainingCommands;
