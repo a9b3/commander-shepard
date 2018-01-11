@@ -33,7 +33,7 @@ export default class Commander extends Command {
   async start() {
     const { flags, commands } = parseArgv()
     if (flags.v || flags.version) {
-      return this.version()
+      return this.printVersion()
     }
     const {
       commandNode,
